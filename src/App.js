@@ -5,6 +5,8 @@ import ActionBar from './components/actionBar';
 import Streaming from './components/streaming';
 import Members from './components/members';
 import WordsBag from './components/wordsBag';
+import howWorks from './components/howWorks';
+import HowWorks from './components/howWorks';
 
 class App extends Component {
   constructor(props) {
@@ -39,6 +41,10 @@ class App extends Component {
       case 3:
           return(
             <Members> </Members>
+          );
+      case 4:
+          return(
+            <HowWorks> </HowWorks>
           );
       default:
         break;

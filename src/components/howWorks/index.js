@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import './style.scss';
 
-class members extends Component {
-
-    
-
+class HowWorks extends Component {
     render() {
         const {
         } = this.props;
 
-
         return (
-            <div id="membersId"> 
+            <div id="howWorksId"> 
                 <div class="card">
                     <div class="card-header">
-                        Integrantes
+                        Funcionamiento
                     </div>
                     <div class="card-body">
-                        <p class="card-text">Acá se verán los integrantes del taller</p>
+                        <p class="card-text">Funciona así así y así :v</p>
                     </div>
                 </div>
             </div>
@@ -25,4 +21,4 @@ class members extends Component {
     }
 }
 
-export default members;
+export default HowWorks;
