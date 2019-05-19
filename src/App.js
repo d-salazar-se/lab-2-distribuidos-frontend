@@ -1,15 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-import ActionBar from './components/actionBar/index.js';
+import ActionBar from './components/actionBar';
+import Streaming from './components/streaming';
+import Members from './components/members';
+import WordsBag from './components/wordsBag';
 
-function App() {
-  return (
-    <div className="App">
-          <ActionBar> </ActionBar>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedItem: 0,
+      times: 0,
+    };
+
+    this.handleSelectedItem = this.handleSelectedItem.bind(this);
+  }
+
+  handleSelectedItem(item){
+    this.setState({
+      selectedItem: item,
+    });
+  }
+
+  renderSelectedItem(item){
+    console.log("item: " + item);
+    switch (item) {
+      case 1:
+        return(
+          <Streaming> </Streaming>
+        );
+    
+      case 2:
+          return(
+            <WordsBag> </WordsBag>
+          );
+
+      case 3:
+          return(
+            <Members> </Members>
+          );
+      default:
+        break;
+    }
+  }
+
+  render(){
+    return (
+      <div className="App">
+            <ActionBar 
+              handleSelectedItem={this.handleSelectedItem}></ActionBar>
+            {this.renderSelectedItem(this.state.selectedItem)}
+      </div>
+    );
+  }
+  
 }
 
 export default App;
