@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.scss';
 
 import ActionBar from './components/actionBar';
 import Streaming from './components/streaming';
 import Members from './components/members';
 import WordsBag from './components/wordsBag';
-import howWorks from './components/howWorks';
 import HowWorks from './components/howWorks';
 
 class App extends Component {

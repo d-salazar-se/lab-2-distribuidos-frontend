@@ -3,21 +3,15 @@ import './style.scss';
 
 class members extends Component {
 
-    
-
     render() {
-        const {
-        } = this.props;
-
-
         return (
             <div id="membersId"> 
-                <div class="card">
-                    <div class="card-header">
+                <div className="card">
+                    <div className="card-header">
                         Integrantes
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">Acá se verán los integrantes del taller</p>
+                    <div className="card-body">
+                        <p className="card-text">Acá se verán los integrantes del taller</p>
                     </div>
                 </div>
             </div>

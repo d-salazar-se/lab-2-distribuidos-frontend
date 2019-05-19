@@ -3,17 +3,14 @@ import './style.scss';
 
 class streaming extends Component {
     render() {
-        const {
-        } = this.props;
-
         return (
             <div id="streamingId"> 
-                <div class="card">
-                    <div class="card-header">
+                <div className="card">
+                    <div className="card-header">
                         Streaming
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">Acá se verá el streaming en directo</p>
+                    <div className="card-body">
+                        <p className="card-text">Acá se verá el streaming en directo</p>
                     </div>
                 </div>
             </div>

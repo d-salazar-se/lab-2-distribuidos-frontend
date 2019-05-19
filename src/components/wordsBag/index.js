@@ -22,6 +22,8 @@ class wordsBag extends Component {
         var inputTextWordsBagDisplay = document.getElementById('inputTextWordsBag_' + index);
         // llamar a api para realizar el cambio a la base de datos de dicha palabra
 
+        console.log(inputTextWordsBagDisplay);
+        
         this.setState({
             
         });
@@ -36,9 +38,6 @@ class wordsBag extends Component {
     }
 
     render() {
-        const {
-        } = this.props;
-        
         return (
             <div id="wordsBagId"> 
                 <div className="card">
