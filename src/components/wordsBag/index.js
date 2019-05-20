@@ -1,74 +1,94 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './style.scss';
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const API_URL = "http://localhost:9000/"
 
 class wordsBag extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isOpenInput: false,
-            words: ["palabra1", "palabr2", "hola", "patatas", "melon", "manzana", "cerro", "casa", "hogar"],
+            isLoading: true,
+            words: [],
         };
-        this.showInputModify = this.showInputModify.bind(this);
+
+        // this.addWord = this.addWord.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     componentDidMount(){
-        //Llamada a API para obtener todas las palabras
+        this.getWords();
     }
 
-    showInputModify(index){
-        var inputTextWordsBagDisplay = document.getElementById('inputTextWordsBag_' + index);
-        // llamar a api para realizar el cambio a la base de datos de dicha palabra
-
-        console.log(inputTextWordsBagDisplay);
-        
-        this.setState({
-            
-        });
+    getWords() {
+        axios.get(API_URL+"words/")
+            .then(result => {
+                this.setState({
+                    isLoading: false,
+                    words: result.data
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     addWord(e){
-        e.preventDefault();
         const newWord = this.newItem.value;
-        this.setState({
-            words: [...this.state.words, newWord]
-        });
+        axios.post(API_URL+"words/", {value: newWord})
+            .then(result =>
+                this.getWords()
+            )
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    delete(word){
+        console.log(word);
+        
+        axios.delete(API_URL+"words/", {value: word})
+            .then(result =>
+                this.getWords()
+            )
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     render() {
         return (
             <div id="wordsBagId"> 
+                { this.state.isLoading ? (
+                    <div>Cargando</div>
+                ) : (
                 <div className="card">
                     <div className="card-header">
-                        Bolsa de palabras
-                        <form className="form-inline" onSubmit={(e) => this.addWord(e)}>
-                            <div className="form-group">
-                                <label for="addWordBox" className="sr-only">Nueva palabra</label>
-                                <input ref={input => this.newItem = input} type="text" className="form-control" id="addWordBox" placeholder="Ingrese nueva palabra" />
-                            </div>
-                            <button type="submit" className="btn btn-primary"> Añadir </button>
-                        </form>
+                        <h3>Bolsa de palabras</h3>
+                        <div className="input-group">
+                            <input ref={input => this.newItem = input} type="text" className="form-control" placeholder="Ingrese nueva palabra" />
+                            <button type="button" className="btn btn-primary">Añadir</button>
+                        </div>
                     </div>
                     <div id="cardWordsBagBody" className="card-body scroll">
-                        <ul>
-                            {this.state.words.map( (words,index) => 
-                                
-                                <div className="input-group mb-3">
+                        {this.state.words.map( (word, index) => {
+                            return (
+                                <div className="input-group mb-3" key="{index}">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text" id="basic-addon1">{words}</span>
+                                        <span className="input-group-text">{word.value}</span>
                                     </div>
-                                    <button id="buttonEditWordsBag" type="button" className="btn btn-warning" onClick={ () => this.showInputModify( (index + 1) ) }> 
-                                        <FontAwesomeIcon icon={faEdit} />
+                                    <button type="button" className="btn btn-danger" onClick={ () => this.delete(word.value) }> 
+                                        <FontAwesomeIcon icon={faTrashAlt} />
                                     </button>
-                                    <input id={"inputTextWordsBag_" + (index + 1)} type="text" className="form-control" placeholder="Ingrese una palabra" aria-describedby="basic-addon1"/>
                                 </div>
                             )}
-                        </ul>
-                        
+                        )}
                     </div>
                 </div>
+                )}
             </div>
         );
     }
