@@ -98,7 +98,6 @@ class wordsBag extends Component {
             }
           </div>
         </div>
-        )}
       </div>
     );
   }
