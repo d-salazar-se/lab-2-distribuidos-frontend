@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './style.scss';
 import axios from 'axios';
+import Loading from '../loading/';
+import './style.scss';
 
 class streaming extends Component {
   constructor(props) {
@@ -24,6 +25,11 @@ class streaming extends Component {
         });
       })
       .catch(error => {
+        console.log(error);
+        this.setState({
+          isLoading: false,
+          tweets: []
+        });
         alert("No ha sido posible conectarse al servidor para obtener los Tweets.");
       })
   }
@@ -36,17 +42,21 @@ class streaming extends Component {
             Streaming
           </div>
           <div className="card-body">
-            <ul>
-            { this.state.tweets.map((tweet, index) => {
-                return (
-                  <li key={index}>
-                    <span>{tweet.user}</span>
-                    <p>{tweet.text}</p>
-                  </li>
-                )
-              })
-            }
-            </ul>
+            { this.state.isLoading ? 
+              <Loading />
+              :
+              <ul>
+              { this.state.tweets.map((tweet, index) => {
+                  return (
+                    <li key={index}>
+                      <span>{tweet.user}</span>
+                      <p>{tweet.text}</p>
+                    </li>
+                  )
+                })
+              }
+              </ul>
+          }
           </div>
         </div>
       </div>

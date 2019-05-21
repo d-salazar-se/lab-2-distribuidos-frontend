@@ -32,6 +32,11 @@ class wordsBag extends Component {
         });
       })
       .catch(error => {
+        console.log(error);
+        this.setState({
+          isLoading: false,
+          words: []
+        });
         alert("No ha sido posible conectarse al servidor para obtener la Bolsa de Palabras.");
       })
   }
@@ -39,9 +44,10 @@ class wordsBag extends Component {
   add(){
     var newWord = this.newWordInput.value;
     axios.post(process.env.REACT_APP_API_URL+"words/", {value: newWord})
-      .then(result =>
-        this.getWords()
-      )
+      .then(result =>{
+        this.newWordInput.value = "";
+        this.getWords();
+      })
       .catch(error => {
         console.log(error);
         alert("Ha ocurrido un error al intentar agregar la palabra.")
@@ -63,30 +69,33 @@ class wordsBag extends Component {
   render() {
     return (
       <div id="wordsBagId"> 
-        { this.state.isLoading ? (
-          <Loading />
-        ) : (
         <div className="card">
           <div className="card-header">
-            <h3>Bolsa de palabras</h3>
+            <div>Bolsa de palabras</div>
             <div className="input-group">
               <input ref={input => this.newWordInput = input} type="text" className="form-control" placeholder="Ingrese una palabra" />
               <button type="button" className="btn btn-primary" onClick={ () => this.add() }>Añadir</button>
             </div>
           </div>
           <div id="cardWordsBagBody" className="card-body scroll">
-            { this.state.words.map((word, index) => {
-              return (
-                <div className="input-group mb-3" key="{index}">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">{word.value}</span>
-                  </div>
-                  <button type="button" className="btn btn-danger" onClick={ () => this.delete(word.value) }> 
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
-                </div>
-              )}
-            )}
+            { this.state.isLoading ?
+              <Loading />
+              :
+              <div>
+                { this.state.words.map((word, index) => {
+                  return (
+                    <div className="input-group mb-3" key="{index}">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text">{word.value}</span>
+                      </div>
+                      <button type="button" className="btn btn-danger" onClick={ () => this.delete(word.value) }> 
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                      </button>
+                    </div>
+                  )}
+                )}
+              </div>
+            }
           </div>
         </div>
         )}
