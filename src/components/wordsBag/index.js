@@ -32,7 +32,7 @@ class wordsBag extends Component {
         });
       })
       .catch(error => {
-        alert("No ha sido posible conectarse al servidor.");
+        alert("No ha sido posible conectarse al servidor para obtener la Bolsa de Palabras.");
       })
   }
 
