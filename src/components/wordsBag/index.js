@@ -42,7 +42,7 @@ class wordsBag extends Component {
   }
 
   add(){
-    var newWord = this.newWordInput.value;
+    var newWord = "#" + this.newWordInput.value;
     axios.post(process.env.REACT_APP_API_URL+"words/", {value: newWord})
       .then(result =>{
         this.newWordInput.value = "";
