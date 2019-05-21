@@ -10,7 +10,7 @@ class HowWorks extends Component {
                         Funcionamiento
                     </div>
                     <div className="card-body">
-                        <p className="card-text">Funciona así así y así :v</p>
+                        <p className="text-justify card-text">Agrega palabras en la sección "Bolsa de palabras" y nuestra aplicación buscará dichas palabras dentro de Twitter.</p>
                     </div>
                 </div>
             </div>

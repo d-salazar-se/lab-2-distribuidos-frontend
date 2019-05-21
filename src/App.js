@@ -1,61 +1,42 @@
 import React, { Component } from 'react';
 import './App.scss';
 
-import ActionBar from './components/actionBar';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+
 import Streaming from './components/streaming';
-import Members from './components/members';
+import About from './components/about';
 import WordsBag from './components/wordsBag';
 import HowWorks from './components/howWorks';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {
-      selectedItem: 0,
-      times: 0,
+      key: 'Streaming',
     };
-
-    this.handleSelectedItem = this.handleSelectedItem.bind(this);
-  }
-
-  handleSelectedItem(item){
-    this.setState({
-      selectedItem: item,
-    });
-  }
-
-  renderSelectedItem(item){
-    console.log("item: " + item);
-    switch (item) {
-      case 1:
-        return(
-          <Streaming> </Streaming>
-        );
-    
-      case 2:
-          return(
-            <WordsBag> </WordsBag>
-          );
-
-      case 3:
-          return(
-            <Members> </Members>
-          );
-      case 4:
-          return(
-            <HowWorks> </HowWorks>
-          );
-      default:
-        break;
-    }
   }
 
   render(){
     return (
       <div className="App">
-            <ActionBar 
-              handleSelectedItem={this.handleSelectedItem}></ActionBar>
-            {this.renderSelectedItem(this.state.selectedItem)}
+        <Tabs
+          activeKey={this.state.key}
+          onSelect={key => this.setState({ key })}
+        >
+          <Tab eventKey="Streaming" title="Streaming">
+            <Streaming></Streaming>
+          </Tab>
+          <Tab eventKey="WordsBag" title="Bolsa de palabras">
+            <WordsBag></WordsBag>
+          </Tab>
+          <Tab eventKey="HowWorks" title="¿Cómo funciona?">
+            <HowWorks></HowWorks>
+          </Tab>
+          <Tab eventKey="About" title="Acerca de">
+            <About></About>
+          </Tab>
+        </Tabs>
       </div>
     );
   }
