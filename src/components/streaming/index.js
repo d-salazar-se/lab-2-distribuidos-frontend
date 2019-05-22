@@ -57,8 +57,16 @@ class streaming extends Component {
 
   refreshPageIn(seconds){
     if(this.state.count === seconds){
-      window.location.reload();
+      this.getTweets();
       clearInterval(this.myInterval)
+      this.setState({
+        count: 0
+      });
+      this.myInterval = setInterval(() => {
+        this.setState(prevState => ({
+          count: prevState.count + 1
+        }));
+      }, 1000)
     }
   }
   
@@ -68,7 +76,8 @@ class streaming extends Component {
       .then(result => {
         this.setState({
           isLoading: false,
-          tweets: result.data
+          tweets: result.data,
+          count: 0,
         });
       })
       .catch(error => {
