@@ -14,7 +14,6 @@ class wordsBag extends Component {
       words: [],
     };
 
-    console.log(process.env);
     this.add = this.add.bind(this);
     this.delete = this.delete.bind(this);
   }

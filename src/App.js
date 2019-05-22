@@ -22,6 +22,7 @@ class App extends Component {
       <div className="App">
         <Tabs
           activeKey={this.state.key}
+          unmountOnExit="true"
           onSelect={key => this.setState({ key })}
         >
           <Tab eventKey="Streaming" title="Streaming">
