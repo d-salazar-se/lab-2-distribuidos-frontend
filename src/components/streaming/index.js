@@ -4,12 +4,10 @@ import Loading from '../loading/';
 import './style.scss';
 
 import {
-  InputGroup,
-  InputGroupButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
- } from 'reactstrap';
+  FormGroup,
+  Label,
+  Input
+} from 'reactstrap';
 
 class streaming extends Component {
   constructor(props) {
@@ -22,12 +20,17 @@ class streaming extends Component {
       words: [],
       dropdownOpen: false,
       wordSelected: '',
+      inputWordValue: '',
     };
     this.startStreaming = this.startStreaming.bind(this);
     this.stopStreaming = this.stopStreaming.bind(this);
+    this.onChangeWordSelected = this.onChangeWordSelected.bind(this);
   }
 
+ 
+
   startStreaming(){
+    
     this.setState({
       isStreamingOn: true
     });
@@ -72,22 +75,27 @@ class streaming extends Component {
   
 
   getTweets() {
-    axios.get(process.env.REACT_APP_API_URL+"tweets/")
-      .then(result => {
-        this.setState({
-          isLoading: false,
-          tweets: result.data,
-          count: 0,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        this.setState({
-          isLoading: false,
-          tweets: []
-        });
-        alert("No ha sido posible conectarse al servidor para obtener los Tweets.");
-      })
+    if(this.state.wordSelected === ''){ //Se buscan todos los tweets
+      axios.get(process.env.REACT_APP_API_URL+"tweets/")
+        .then(result => {
+          this.setState({
+            isLoading: false,
+            tweets: result.data,
+            count: 0,
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({
+            isLoading: false,
+            tweets: []
+          });
+          alert("No ha sido posible conectarse al servidor para obtener los Tweets.");
+        })
+    }
+    else{ //Se buscan los tweets en base a una palabra en especifico
+
+    }
   }
 
   getWords() {
@@ -98,19 +106,17 @@ class streaming extends Component {
           words: result.data
         });
         let select = document.getElementById("dropdownWords"); 
-        if(this.state.words.length > 1){
-          for (let i = 1; i < this.state.words.length; i++) {
-            let option = document.createElement("OPTION"), txt = document.createTextNode(this.state.words[i]);
-            option.appendChild(txt);
-            select.insertBefore(option, select.lastChild);
-          }
+        for (let i = 0; i < this.state.words.length; i++) {
+          let option = document.createElement("OPTION"), txt = document.createTextNode(this.state.words[i]);
+          option.appendChild(txt);
+          select.insertBefore(option, select.lastChild);
         }
       })
       .catch(error => {
         console.log(error);
         this.setState({
           isLoading: false,
-          words: [],
+          //words: [],
         });
         alert("No ha sido posible conectarse al servidor para obtener la Bolsa de Palabras.");
       })
@@ -123,53 +129,71 @@ class streaming extends Component {
   }
 
   onChangeWordSelected(event){
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen,
-      wordSelected: event.target.innerText
-    });
+    event.preventDefault();
+    const value = event.target.value;
+    let d = document.getElementById("dropdownWords");
+    let displayText = d.options[d.selectedIndex].text;
+    
+    if(event.target.value === "1"){
+      this.setState({
+        dropdownOpen: !this.state.dropdownOpen,
+        wordSelected: '',
+        inputWordValue: value
+      });
+    }
+    else{
+      this.setState({
+        dropdownOpen: !this.state.dropdownOpen,
+        wordSelected: displayText,
+        inputWordValue: value
+      });
+    }
   }
-
-  /*
-  <ul>
-  { this.state.words.map((word, index) => {
-      return (
-        <li key={index}>
-          <option value={"" + index}> {word} </option>
-        </li>
-        
-      )
-    })
-  }
-  </ul>
-  */ 
 
   render() {
     this.refreshPageIn(10);
-    console.log("words: ", this.state.words);
 
     
     return (
       <div id="streamingId"> 
         <div className="card">
           <div className="card-header">
-            <h5>Streaming de tweets, count: {this.state.count}</h5>
+            <div>
+              <div className="row"> 
+                <h3 id="labelStreaming">Streaming de tweets, count: {this.state.count}</h3>
+              </div>
+              <div className="row"> 
+                <FormGroup>
+                  <Label>
+                  <Input
+                    id="dropdownWords"
+                    value={this.state.inputWordValue}
+                    type="select"
+                    onChange={this.onChangeWordSelected}
+                  >
+                    <option key={0} selected="" value="1"> {"Ninguno"} </option>
+                    {this.state.words.map( (word,key) => {
+                      return(<option key={key + 1} value={key + 2}> {word} </option>)
+                    })
+                    }
+                  </Input>
+                  </Label>
+                </FormGroup>
+              </div>
+              <div className="row"> 
+                <div id="btnStreaming">
+                  {!this.state.isStreamingOn && 
+                    <button type="button" class="btn btn-success" onClick={this.startStreaming}> Empezar streaming </button>
+                  }
 
-            <div id="myForm" class="form-group">
-              <select id="dropdownWords" class="custom-select">
-                <option selected="">{this.state.words[0]}</option>
-              </select>
+                  {this.state.isStreamingOn &&
+                    <button type="button" class="btn btn-warning" onClick={this.stopStreaming}> Detener streaming </button>
+                  }
+                </div>
+              </div>
             </div>
-            
-            {!this.state.isStreamingOn && 
-              <button id="btnStreaming" type="button" class="btn btn-success" onClick={this.startStreaming}> Empezar streaming </button>
-            }
-
-            {this.state.isStreamingOn &&
-              <button id="btnStreaming" type="button" class="btn btn-warning" onClick={this.stopStreaming}> Detener streaming </button>
-            }
-            
-            
           </div>
+
           <div className="card-body">
             { this.state.isLoading ? 
               <Loading />
