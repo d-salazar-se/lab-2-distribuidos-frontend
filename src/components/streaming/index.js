@@ -8,7 +8,10 @@ class streaming extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      tweets: [],
+      tweets: [ //Ejemplo
+        { user: "marcelo", 
+          text: "hola mundo"}
+      ],
     };
   }
 
@@ -28,7 +31,7 @@ class streaming extends Component {
         console.log(error);
         this.setState({
           isLoading: false,
-          tweets: []
+          //tweets: []
         });
         alert("No ha sido posible conectarse al servidor para obtener los Tweets.");
       })
@@ -39,7 +42,7 @@ class streaming extends Component {
       <div id="streamingId"> 
         <div className="card">
           <div className="card-header">
-            Streaming
+            Streaming de tweets
           </div>
           <div className="card-body">
             { this.state.isLoading ? 
@@ -49,8 +52,14 @@ class streaming extends Component {
               { this.state.tweets.map((tweet, index) => {
                   return (
                     <li key={index}>
-                      <span>{tweet.user}</span>
-                      <p>{tweet.text}</p>
+                      <div id="tweet" class="card text-white bg-info mb-3">
+                        <div class="card-header">
+                          <span>{tweet.user}</span>
+                        </div>
+                          <div class="card-body">
+                            <p class="card-text">{tweet.text}</p>
+                          </div>
+                      </div>
                     </li>
                   )
                 })
