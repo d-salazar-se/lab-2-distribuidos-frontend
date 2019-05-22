@@ -164,7 +164,7 @@ class streaming extends Component {
               </div>
               <div className="row"> 
                 <FormGroup>
-                  <Label>
+                  <Label for="dropdownWords"> ¿Quieres buscar por una palabra especifica?, escoge la que quieras! (Puedes editar la bolsa de palabras desde el menu de bolsa de palabras) </Label>
                   <Input
                     id="dropdownWords"
                     value={this.state.inputWordValue}
@@ -177,7 +177,7 @@ class streaming extends Component {
                     })
                     }
                   </Input>
-                  </Label>
+                  
                 </FormGroup>
               </div>
               <div className="row"> 
